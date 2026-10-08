@@ -1,4 +1,77 @@
+# ROS 2 / colcon workspace outputs (root and nested workspaces)
 build/
-log/
 install/
+log/
+.colcon/
+
+# Python bytecode and native extension outputs
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Python packaging outputs
+dist/
+.eggs/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# Test, coverage, lint and type-check caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+nosetests.xml
+.hypothesis/
+
+# Local environment and credentials; keep distributable templates
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.sample
+!.env.*.sample
+/.aws/
+/secrets/
+/credentials/
+
+# Runtime logs, process files and local ROS state
+*.log
+*.log.*
+*.pid
+*.pid.lock
+.ros/
+
+# Large local recordings; keep intentional fixtures outside these directories
+/recordings/
+/rosbags/
+
+# Editor and notebook state
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
+.ipynb_checkpoints/
+
+# Operating system metadata
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
