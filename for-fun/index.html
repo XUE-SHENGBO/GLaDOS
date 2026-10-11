@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111316">
+<title>GLaDOS · 情绪实验室</title>
+<style>
+:root{--bg:#111316;--panel:#191c20;--line:#303337;--ink:#f3f1eb;--dim:#999d9f;--accent:#ffbc66;--rgb:255,188,102;--mono:Consolas,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 "Microsoft YaHei",system-ui,sans-serif}button,textarea{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:4px}button:disabled{cursor:wait;opacity:.6}::selection{background:#765333;color:white}
+.wrap{width:min(1240px,calc(100% - 64px));margin:auto}header{height:88px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}.brand{display:flex;gap:13px;align-items:center}.brand-icon{width:34px;height:34px;border:1px solid #6d5b43;border-radius:50%;display:grid;place-items:center;position:relative}.brand-icon:before{content:'';width:12px;height:12px;background:var(--accent);border-radius:50%;box-shadow:0 0 14px #ffbc6650}.brand-title{font-family:var(--mono);letter-spacing:3px;font-weight:bold;font-size:18px}.brand-caption{color:var(--dim);font-size:11px;letter-spacing:2px}.status{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:1px;color:#b2b8b6}.dot{width:6px;height:6px;background:#a2d7af;border-radius:50%;box-shadow:0 0 9px #a2d7af60}.hero{padding:34px 0 27px;display:flex;justify-content:space-between;align-items:end}.eyebrow{color:var(--accent);font:11px var(--mono);letter-spacing:2px;margin-bottom:12px}h1{font-size:clamp(26px,3.4vw,42px);letter-spacing:-1px;font-weight:600;line-height:1.25;margin:0 0 12px}h1 span{color:var(--accent)}.subtitle{margin:0;color:var(--dim)}.edition{font:11px/1.8 var(--mono);text-align:right;color:#666d72;letter-spacing:1px}.workspace{display:grid;grid-template-columns:1.32fr 1fr;gap:20px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden}.panel-head{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--line)}.label{font:11px var(--mono);letter-spacing:1.5px;color:var(--dim)}.label b{color:var(--ink);font-weight:normal}.tiny{font:10px var(--mono);letter-spacing:1px;color:#6f767b}.stage{height:340px;position:relative;display:grid;place-items:center;isolation:isolate;background:radial-gradient(ellipse at center,rgba(var(--rgb),.055),transparent 65%)}.stage:before{content:'';position:absolute;inset:0;opacity:.2;background-image:linear-gradient(#62666b25 1px,transparent 1px),linear-gradient(90deg,#62666b25 1px,transparent 1px);background-size:26px 26px;z-index:-1}.cross{position:absolute;width:14px;height:14px;border-color:#63676b;border-style:solid}.tl{top:25px;left:25px;border-width:1px 0 0 1px}.tr{top:25px;right:25px;border-width:1px 1px 0 0}.bl{bottom:25px;left:25px;border-width:0 0 1px 1px}.br{bottom:25px;right:25px;border-width:0 1px 1px 0}.stage-note{position:absolute;bottom:24px;left:25px;color:#687074;font:9px var(--mono);letter-spacing:2px}.stage-number{position:absolute;top:25px;right:28px;font:10px var(--mono);color:#687074}.robot-wrap{width:330px;max-width:80%;position:relative;animation:float 5s ease-in-out infinite}.robot{width:100%;overflow:visible;filter:drop-shadow(0 15px 22px #0008)}.eyes{transform-origin:center;transform-box:fill-box;animation:blink 5.8s infinite}.eye-shape{fill:var(--accent);filter:url(#glow)}.mouth{stroke:var(--accent);fill:none;stroke-width:5;stroke-linecap:round}.brow{stroke:var(--accent);fill:none;stroke-width:5;stroke-linecap:round;opacity:0}.cheek{fill:#f7987a;opacity:0;transition:opacity .3s}.tears{opacity:0}.tear{fill:#83ccf3;animation:tear 1.8s infinite}.sparkles{opacity:0;fill:var(--accent)}.spark{animation:twinkle 1.5s infinite;transform-origin:center;transform-box:fill-box}.wave{stroke:var(--accent);fill:none;opacity:.3}.ring{border:1px solid rgba(var(--rgb),.09);border-radius:50%;position:absolute;inset:-22px -3px;z-index:-1}.ring:after{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);position:absolute;top:42%;left:0;box-shadow:0 0 12px var(--accent)}
+[data-emotion=happy] .cheek{opacity:.4}[data-emotion=happy] .sparkles{opacity:1}[data-emotion=happy] .robot-wrap{animation:happy 2.8s ease-in-out infinite}[data-emotion=sad] .tears{opacity:1}[data-emotion=sad] .robot-wrap{animation:float 7s ease-in-out infinite}[data-emotion=angry] .brow{opacity:1}[data-emotion=angry] .robot-wrap{animation:grumble 2.4s ease-in-out infinite}[data-emotion=scared] .robot-wrap{animation:tremble .3s infinite}[data-emotion=sleepy] .eyes{animation:none}[data-emotion=sleepy] .robot-wrap{animation:sleep 5s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-9px) rotate(1deg)}}@keyframes blink{0%,42%,46%,100%{transform:scaleY(1)}44%{transform:scaleY(.06)}}@keyframes happy{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}@keyframes tear{0%{transform:translateY(-5px);opacity:0}30%{opacity:1}100%{transform:translateY(28px);opacity:0}}@keyframes twinkle{0%,100%{transform:scale(.6);opacity:.4}50%{transform:scale(1);opacity:1}}@keyframes grumble{0%,80%,100%{transform:rotate(0)}84%,92%{transform:rotate(-2deg)}88%,96%{transform:rotate(2deg)}}@keyframes tremble{0%,100%{transform:translateX(-1px)}50%{transform:translateX(1px)}}@keyframes sleep{0%,100%{transform:translateY(4px) rotate(-4deg)}50%{transform:translateY(0) rotate(-2deg)}}
+.expression-bar{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-top:1px solid var(--line)}.emotion-name{font-size:20px;font-weight:600}.emotion-en{font:10px var(--mono);color:var(--accent);letter-spacing:2px;margin-left:10px}.tag{font:10px var(--mono);color:var(--accent);border:1px solid rgba(var(--rgb),.3);background:rgba(var(--rgb),.06);padding:4px 9px;border-radius:5px}.response{margin:0;padding:17px 22px 21px;border-top:1px solid var(--line);color:#c6cac9;min-height:76px;display:flex;gap:12px;align-items:start}.quote{font:28px Georgia;color:var(--accent);line-height:1}.control{padding:23px}.section-title{font-size:17px;margin:0 0 5px;font-weight:600}.helper{font-size:12px;color:var(--dim);margin:0 0 17px}textarea{width:100%;height:114px;padding:14px;background:#121518;border:1px solid #373c40;color:var(--ink);border-radius:10px;resize:vertical;line-height:1.8;min-height:90px}textarea:focus{border-color:#9b7448;outline:none;box-shadow:0 0 0 3px #ffbc6610}textarea::placeholder{color:#6d747a}.input-meta{display:flex;justify-content:space-between;font:10px var(--mono);color:#727a7f;margin:7px 0 15px}.run{width:100%;border:0;background:var(--accent);color:#302012;border-radius:9px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;font-weight:bold;transition:filter .2s,transform .2s}.run:hover{filter:brightness(1.1);transform:translateY(-1px)}.run:active{transform:translateY(1px)}.run span:last-child{font-size:20px;line-height:1}#message{color:#ffaf94;font-size:12px;min-height:20px;margin-top:7px}.divider{height:1px;background:var(--line);margin:12px 0 19px}.presets-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.presets-label span:first-child{font-size:12px}.presets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.preset{background:#22262b;color:#b9bfc1;border:1px solid #353a40;border-radius:9px;padding:10px 4px;transition:all .2s}.preset:hover{border-color:#87704f;background:#2c2b28;transform:translateY(-2px)}.preset[aria-pressed=true]{border-color:var(--accent);color:var(--accent);background:rgba(var(--rgb),.08)}.preset-icon{display:block;font:19px var(--mono);height:30px}.preset-name{font-size:11px}.footnote{color:#7e878c;font-size:11px;margin:17px 0 0}.trace-panel{margin-top:20px}.trace-head{cursor:pointer;padding:17px 22px;display:flex;justify-content:space-between;align-items:center;list-style:none}.trace-head::-webkit-details-marker{display:none}.trace-head .label{color:#c1c6c8}.trace-head:after{content:'＋';font-size:18px;color:var(--dim)}details[open] .trace-head:after{content:'−'}.trace-body{padding:0 22px 20px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.step{padding:14px;background:#13171b;border:1px solid #2b3136;border-radius:8px}.step-number{color:var(--accent);font:10px var(--mono);letter-spacing:1px}.step h3{font-size:12px;margin:6px 0}.step p{font-size:12px;margin:0;color:#8f9aa1;overflow-wrap:anywhere}.bottom{padding:23px 0 30px;display:flex;justify-content:space-between;color:#657077;font:10px var(--mono);letter-spacing:1px}.bottom strong{font-weight:normal;color:#939b9e}.animation-toggle{background:transparent;border:1px solid #3c4246;color:#a9b0b2;padding:4px 10px;border-radius:5px;font-size:10px}.animation-toggle:hover{border-color:var(--accent)}.paused *, .paused *:before,.paused *:after{animation-play-state:paused!important}.paused .pupils{transform:none!important}
+@media(max-width:900px){.wrap{width:calc(100% - 36px)}.workspace{grid-template-columns:1fr 1fr}.stage{height:315px}.robot-wrap{width:270px}.control{padding:18px}.presets{grid-template-columns:repeat(3,1fr)}.edition{display:none}.steps{grid-template-columns:1fr}}
+@media(max-width:640px){.wrap{width:calc(100% - 28px)}header{height:72px}.brand-title{font-size:15px}.brand-caption{font-size:9px}.status{font-size:9px}.hero{padding:27px 0 22px}.subtitle{font-size:12px}.workspace{grid-template-columns:1fr;gap:14px}.stage{height:290px}.robot-wrap{width:285px}.presets{grid-template-columns:repeat(4,1fr)}.bottom{font-size:9px;gap:15px}.expression-bar{padding:14px 20px}.trace-panel{margin-top:14px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.pupils{transform:none!important}}
+</style>
+</head>
+<body data-emotion="neutral">
+<div class="wrap">
+<header><div class="brand"><div class="brand-icon" aria-hidden="true"></div><div><div class="brand-title">GLaDOS<span style="color:var(--accent)">.</span></div><div class="brand-caption">EMOTION LAB / 情绪实验室</div></div></div><div class="status"><span class="dot"></span>LOCAL · READY</div></header>
+<div class="hero"><div><div class="eyebrow">EXPERIMENT 001 — HUMAN CONNECTION</div><h1>说一句话，<span>看见情绪。</span></h1><p class="subtitle">一个小小的机器人，也想读懂你的喜怒哀乐。</p></div><div class="edition">INTERACTIVE EXPRESSION STUDY<br>DESIGNED TO FEEL A LITTLE MORE ALIVE</div></div>
+<main>
+<div class="workspace">
+<section class="panel" aria-label="机器人表情">
+<div class="panel-head"><span class="label"><b>01</b> / EXPRESSION DISPLAY</span><button class="animation-toggle" id="motion" aria-pressed="false">暂停动画</button></div>
+<div class="stage" id="stage"><i class="cross tl"></i><i class="cross tr"></i><i class="cross bl"></i><i class="cross br"></i><span class="stage-number">UNIT / G-01</span>
+<div class="robot-wrap"><div class="ring"></div>
+<svg class="robot" viewBox="0 0 360 260" role="img" aria-labelledby="robot-title"><title id="robot-title">GLaDOS，平静表情</title>
+<defs><linearGradient id="shell" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#f2efe6"/><stop offset="1" stop-color="#9ea4a5"/></linearGradient><linearGradient id="screen" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#171d23"/><stop offset="1" stop-color="#090d11"/></linearGradient><filter id="glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<path d="M180 43 V23" stroke="#aab1b1" stroke-width="5" stroke-linecap="round"/><circle cx="180" cy="20" r="7" fill="var(--accent)" filter="url(#glow)"/>
+<rect x="20" y="99" width="28" height="63" rx="12" fill="#646e74"/><rect x="312" y="99" width="28" height="63" rx="12" fill="#646e74"/>
+<rect x="33" y="47" width="294" height="175" rx="65" fill="url(#shell)" stroke="#dce0da" stroke-width="1"/>
+<rect x="51" y="66" width="258" height="137" rx="49" fill="url(#screen)" stroke="#495259" stroke-width="3"/>
+<path d="M76 84 Q110 76 156 80" stroke="#ffffff10" stroke-width="3" fill="none" stroke-linecap="round"/>
+<g class="pupils" id="pupils"><g class="eyes"><path id="left-eye" class="eye-shape" d="M109 112 Q121 110 133 112 L133 144 Q121 146 109 144 Z"/><path id="right-eye" class="eye-shape" d="M227 112 Q239 110 251 112 L251 144 Q239 146 227 144 Z"/></g></g>
+<path class="brow" d="M102 99 L142 112 M218 112 L258 99"/><path id="mouth" class="mouth" d="M162 166 Q180 171 198 166"/>
+<ellipse class="cheek" cx="90" cy="158" rx="16" ry="6"/><ellipse class="cheek" cx="270" cy="158" rx="16" ry="6"/>
+<g class="tears"><path class="tear" d="M107 150 Q96 164 107 168 Q118 164 107 150"/><path class="tear" style="animation-delay:.8s" d="M251 150 Q240 164 251 168 Q262 164 251 150"/></g>
+<g class="sparkles"><path class="spark" d="M27 45 L30 54 L39 57 L30 60 L27 69 L24 60 L15 57 L24 54 Z"/><path class="spark" style="animation-delay:.5s" d="M333 174 L337 186 L349 190 L337 194 L333 206 L329 194 L317 190 L329 186 Z"/></g>
+<rect x="146" y="228" width="68" height="9" rx="4.5" fill="#5b666c"/><circle cx="166" cy="232" r="2" fill="var(--accent)"/><circle cx="180" cy="232" r="2" fill="#8c969b"/><circle cx="194" cy="232" r="2" fill="#8c969b"/>
+</svg></div><div class="stage-note">MOVE YOUR CURSOR · SAY HELLO</div></div>
+<div class="expression-bar"><div><span class="emotion-name" id="emotion">平静</span><span class="emotion-en" id="emotion-en">NEUTRAL</span></div><span class="tag" id="source">等待输入</span></div>
+<div class="response" aria-live="polite"><span class="quote" aria-hidden="true">“</span><span id="reply">我在这里。今天，有什么想对我说的吗？</span></div>
+</section>
+<section class="panel" aria-label="情绪控制台"><div class="panel-head"><span class="label"><b>02</b> / SAY SOMETHING</span><span class="tiny">TEXT → EMOTION</span></div><div class="control">
+<h2 class="section-title"><label for="input">今天的你，感觉怎么样？</label></h2><p class="helper">写下你的心情，让 GLaDOS 给你一个表情。</p>
+<textarea id="input" maxlength="500" placeholder="比如：终于调通代码了，好开心！"></textarea><div class="input-meta"><span>CTRL / ⌘ + ENTER 发送</span><span id="count">0 / 500</span></div>
+<button class="run" id="run"><span>发送给 GLaDOS</span><span aria-hidden="true">↗</span></button><div id="message" role="status"></div>
+<div class="divider"></div><div class="presets-label"><span>或直接试试一种心情</span><span class="tiny">QUICK PLAY</span></div>
+<div class="presets" id="presets">
+<button class="preset" data-emotion="happy" aria-pressed="false"><span class="preset-icon">⌒‿⌒</span><span class="preset-name">开心</span></button>
+<button class="preset" data-emotion="sad" aria-pressed="false"><span class="preset-icon">T﹏T</span><span class="preset-name">难过</span></button>
+<button class="preset" data-emotion="angry" aria-pressed="false"><span class="preset-icon">>︿<</span><span class="preset-name">生气</span></button>
+<button class="preset" data-emotion="surprised" aria-pressed="false"><span class="preset-icon">⊙o⊙</span><span class="preset-name">惊讶</span></button>
+<button class="preset" data-emotion="scared" aria-pressed="false"><span class="preset-icon">º﹏º</span><span class="preset-name">害怕</span></button>
+<button class="preset" data-emotion="sleepy" aria-pressed="false"><span class="preset-icon">－.－</span><span class="preset-name">困困</span></button>
+<button class="preset" data-emotion="neutral" aria-pressed="true"><span class="preset-icon">•‿•</span><span class="preset-name">平静</span></button>
+<button class="preset" id="random"><span class="preset-icon">✧</span><span class="preset-name">随机心情</span></button>
+</div><p class="footnote">无需账号 · 无需联网 · 文字只在本页处理<br>这是关键词演示，复杂语义可能判断不准。</p>
+</div></section>
+</div>
+<details class="panel trace-panel"><summary class="trace-head"><span class="label">03 / 小机器人是怎么理解你的？</span></summary><div class="trace-body"><div class="steps">
+<div class="step"><span class="step-number">01 / INPUT</span><h3>收到你的话</h3><p id="trace-input">等待你的第一句话。</p></div>
+<div class="step"><span class="step-number">02 / UNDERSTAND</span><h3>找到一种情绪</h3><p id="trace-detect">寻找情绪关键词，或使用你选择的心情。</p></div>
+<div class="step"><span class="step-number">03 / EXPRESS</span><h3>给你一个表情</h3><p id="trace-action">只调用预设表情；文字不能添加其他操作。</p></div>
+</div></div></details>
+</main><footer class="bottom"><span><strong>GLaDOS EMOTION LAB</strong> / 一个有温度的小实验</span><span>RULE-BASED DEMO · V02</span></footer>
+</div>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const emotions = {
+ neutral:{label:'平静',color:'255,188,102',left:'M109 112 Q121 110 133 112 L133 144 Q121 146 109 144 Z',mouth:'M162 166 Q180 171 198 166',reply:'我在这里。今天，有什么想对我说的吗？',sample:'你好，GLaDOS。'},
+ happy:{label:'开心',color:'255,198,112',left:'M101 135 Q121 100 141 135 L135 139 Q121 116 107 139 Z',mouth:'M160 158 Q180 190 200 158',reply:'开心已收到！如果可以，我想把这一刻存进我的小电路。',sample:'终于调通代码了，好开心！'},
+ sad:{label:'难过',color:'137,191,238',left:'M103 125 Q122 135 139 121 L139 135 Q121 149 103 136 Z',mouth:'M161 177 Q180 159 199 177',reply:'今天有点难，对吗？先慢慢来，我会陪你待一会儿。',sample:'今天有点难过，想休息一下。'},
+ angry:{label:'生气',color:'255,132,105',left:'M103 118 L141 131 L135 147 L107 143 Z',mouth:'M163 175 L172 169 L181 175 L190 169 L199 175',reply:'检测到一点小火苗。先深呼吸，再一起想办法。',sample:'怎么又报错了，好生气！'},
+ surprised:{label:'惊讶',color:'204,176,255',left:'M106 121 A15 22 0 1 0 136 121 A15 22 0 1 0 106 121 Z',mouth:'M169 170 A11 13 0 1 0 191 170 A11 13 0 1 0 169 170 Z',reply:'哇哦，我的电路也跟着亮了一下。快说说发生了什么！',sample:'竟然一次就成功了，太不可思议了！'},
+ scared:{label:'害怕',color:'161,217,202',left:'M106 126 A15 19 0 1 0 136 126 A15 19 0 1 0 106 126 Z',mouth:'M160 174 Q165 165 170 174 Q175 183 180 174 Q185 165 190 174 Q195 183 200 174',reply:'有点紧张也没关系。我们把事情拆小一点，一步一步来。',sample:'明天要演示项目了，我有点紧张。'},
+ sleepy:{label:'困困',color:'176,182,211',left:'M101 133 Q121 145 141 133 L140 138 Q121 151 102 138 Z',mouth:'M174 171 Q180 175 186 171',reply:'电量不足提示：你可能需要休息。我帮你守着这份好心情。',sample:'好困啊，今天真的累了。'}
+};
+const rules = [
+ ['sad',['不开心','不高兴','不快乐','开心不起来','难过','伤心','沮丧','失落','想哭']],
+ ['angry',['不生气',['生气','愤怒','烦死','气死']]],
+ ['scared',['不害怕','不紧张',['害怕','恐惧','紧张','担心']]],
+ ['sleepy',['好困','困了','困死','想睡','累了','疲惫']],
+ ['surprised',['惊讶','震惊','不可思议','没想到','竟然']],
+ ['happy',['开心','高兴','快乐','太棒','喜欢','成功了']]
+];
+// 只根据关键词判断，不执行输入中的其他指令。
+function detectEmotion(text){
+ for(const [emotion,list] of rules){
+  const words=list.filter(item=>typeof item==='string'&&!item.startsWith('不'));
+  const group=list.find(Array.isArray);
+  if(group){
+   const cleaned=list.filter(item=>typeof item==='string').reduce((value,negative)=>value.replaceAll(negative,''),text);
+   const keyword=group.find(word=>cleaned.includes(word));if(keyword)return{emotion,keyword};
+  }else{
+   const keywords=emotion==='sad'?list:words;
+   const keyword=keywords.find(word=>text.includes(word));if(keyword)return{emotion,keyword};
+  }
+ }
+ return{emotion:'neutral',keyword:null};
+}
+function showEmotion(name,source){
+ if(!Object.hasOwn(emotions,name))throw new Error('不支持的表情');
+ const e=emotions[name];document.body.dataset.emotion=name;
+ document.documentElement.style.setProperty('--rgb',e.color);
+ document.documentElement.style.setProperty('--accent','rgb('+e.color+')');
+ $('left-eye').setAttribute('d',e.left);
+ $('right-eye').setAttribute('d',e.left);$('right-eye').setAttribute('transform','translate(360 0) scale(-1 1)');
+ $('mouth').setAttribute('d',e.mouth);$('emotion').textContent=e.label;$('emotion-en').textContent=name.toUpperCase();
+ $('robot-title').textContent='GLaDOS，'+e.label+'表情';$('reply').textContent=e.reply;$('source').textContent=source;
+ document.querySelectorAll('[data-emotion].preset').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.emotion===name)));
+ $('trace-action').textContent='已检查并显示「'+e.label+'」表情；仅更新本页画面。';
+}
+function updateCount(){$('count').textContent=$('input').value.length+' / 500';}
+function send(){
+ const text=$('input').value.trim();$('message').textContent='';
+ if(!text){$('message').textContent='先写一句话吧，我正在听。';$('input').focus();return;}
+ const result=detectEmotion(text);showEmotion(result.emotion,'关键词识别');
+ $('trace-input').textContent=text;
+ $('trace-detect').textContent=result.keyword?'找到「'+result.keyword+'」，选择'+emotions[result.emotion].label+'。':'未匹配情绪关键词，使用平静表情。';
+}
+function choose(name){$('input').value=emotions[name].sample;updateCount();$('message').textContent='';showEmotion(name,'手动选择');$('trace-input').textContent=$('input').value;$('trace-detect').textContent='直接使用你选择的「'+emotions[name].label+'」心情。';}
+$('run').addEventListener('click',send);$('input').addEventListener('input',updateCount);
+$('input').addEventListener('keydown',event=>{if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();send();}});
+$('presets').addEventListener('click',event=>{const button=event.target.closest('button');if(!button)return;if(button.id==='random'){const names=Object.keys(emotions);choose(names[Math.floor(Math.random()*names.length)]);}else if(button.dataset.emotion){choose(button.dataset.emotion);}});
+$('motion').addEventListener('click',()=>{const paused=document.body.classList.toggle('paused');$('motion').textContent=paused?'继续动画':'暂停动画';$('motion').setAttribute('aria-pressed',String(paused));$('pupils').style.transform='';});
+const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+$('stage').addEventListener('pointermove',event=>{if(document.body.classList.contains('paused')||reducedMotion.matches)return;const r=$('stage').getBoundingClientRect();const x=Math.max(-5,Math.min(5,(event.clientX-r.left-r.width/2)/r.width*10));const y=Math.max(-4,Math.min(4,(event.clientY-r.top-r.height/2)/r.height*8));$('pupils').style.transform='translate('+x+'px,'+y+'px)';});
+$('stage').addEventListener('pointerleave',()=>{$('pupils').style.transform='';});
+</script>
+</body></html>
