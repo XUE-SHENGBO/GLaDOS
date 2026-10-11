@@ -8,4 +8,8 @@
 [项目架构](./docs/architecture.md)
 [开发计划](./docs/develop.md)
 
-个人文件放在 [BTTwas/](./BTTwas/)，分支：`BTTwas-improve`。
+## BTTwas
+
+[文件目录](./BTTwas/) · [测试](./BTTwas/tests/) · [练习](./BTTwas/exercises/) · [资料](./BTTwas/notes/) · [待整理](./BTTwas/inbox/)
+
+分支：[`BTTwas-improve`](https://github.com/XUE-SHENGBO/GLaDOS/tree/BTTwas-improve)。
