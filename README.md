@@ -7,3 +7,7 @@
 [开发日志](./docs/CHANGELOG.md)
 [项目架构](./docs/architecture.md)
 [开发计划](./docs/develop.md)
+
+## BTTwas 的测试与学习文件
+
+个人上传入口：[BTTwas/](./BTTwas/README.md)，使用分支 `BTTwas-improve`。目录分类、上传方法和测试记录模板见入口说明。
