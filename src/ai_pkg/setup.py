@@ -11,7 +11,12 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools'],
+    install_requires=[
+        'setuptools',
+        'python-dotenv',
+        'openai',
+        'prompt-toolkit',
+    ],
     zip_safe=True,
     maintainer='lfzyzl',
     maintainer_email='e1513085@u.nus.edu',
@@ -24,7 +29,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'ai_node_placeholder = ai_pkg.ai_node_placeholder:main'
+            'ai_backend = ai_pkg.gen_msg_action:main',
+            'TUI = ai_pkg.ai_tui:main',
         ],
     },
 )

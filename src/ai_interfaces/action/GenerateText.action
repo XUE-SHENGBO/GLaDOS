@@ -1,0 +1,12 @@
+# Goal：请求
+string prompt
+string conversation_id
+---
+# Result：最终结果
+string text
+string error_code
+string error_message
+---
+# Feedback：流式输出
+string delta
+uint32 sequence

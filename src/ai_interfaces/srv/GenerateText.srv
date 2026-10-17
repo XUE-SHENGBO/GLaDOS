@@ -1,0 +1,8 @@
+# Request
+string prompt
+string conversation_id
+---
+# Result：最终结果
+string text
+string error_code
+string error_message
