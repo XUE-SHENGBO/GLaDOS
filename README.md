@@ -7,3 +7,4 @@
 [开发日志](./docs/CHANGELOG.md)
 [项目架构](./docs/architecture.md)
 [开发计划](./docs/develop.md)
+[使用说明](./docs/manual.md)
