@@ -4,14 +4,9 @@
 colcon build --symlink-install
 ```
 
-启动两个终端窗口
+启动
 ```bash
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
-ros2 run ai_pkg ai_backend
-```
-```bash
-source /opt/ros/jazzy/setup.bash
-source install/setup.bash
-ros2 run ai_pkg TUI
+ros2 launch ai_pkg TUI.launch.py
 ```

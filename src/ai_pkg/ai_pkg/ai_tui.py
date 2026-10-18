@@ -11,6 +11,7 @@ from threading import Thread
 
 from concurrent.futures import Future as ThreadFuture
 from prompt_toolkit.patch_stdout import patch_stdout
+
 class TUINode(Node):
     def __init__(self):
         super().__init__('TUI_node')
@@ -24,18 +25,19 @@ class TUINode(Node):
         self.user_input = None
         self.history = {0: []}
         self.conversation_id = 0
-
+        self.is_receiving = False
         self.get_logger().info(f'ai_tui_node startup!')
         
 
     
-    async def receive_input(self):
+    async def receive_input(self):#接受输入和发起goal
         session = PromptSession()
+        print()
         self.user_input = await session.prompt_async('user:')
         self.history[self.conversation_id].append(self.user_input)
         self.send_goal()
 
-    def send_goal(self):
+    def send_goal(self):#处理发送
         if not self.client.server_is_ready():
             self.get_logger().warning('Server has not been ready, please try agian later.')
             return
@@ -50,7 +52,7 @@ class TUINode(Node):
         )
         self.send_future.add_done_callback(self.goal_response_callback)
 
-    def goal_response_callback(self,future):
+    def goal_response_callback(self,future):#处理服务端是否接受goal
         try:
             handle = future.result()
         except Exception as exc:
@@ -62,18 +64,20 @@ class TUINode(Node):
             return
 
         self.goal_handle = handle
+        self.is_receiving = True
         self.result_future = handle.get_result_async()
         self.result_future.add_done_callback(self.result_callback)
 
-    def feedback_callback(self,feedback_msg):
+    def feedback_callback(self,feedback_msg):#打印feedback
         feedback = feedback_msg.feedback
-        print(feedback.delta,end='')
+        print(feedback.delta,end='',flush=True)
 
-    def result_callback(self,future):
+    def result_callback(self,future):#返回result后返回全部内容和成功失败消息
         try:
             response = future.result()
         except Exception as exc:
             self.get_logger().error(f'error when getting result:{exc}')
+            self.is_receiving = False
             return
         result = response.result
         status = response.status
@@ -87,8 +91,9 @@ class TUINode(Node):
             self.get_logger().info(f'mission canceled:{result}')
         else:
             self.get_logger().warning(f'unkown status:{result}')
+        self.is_receiving = False
 
-    def request_cancel(self):
+    def request_cancel(self):#请求取消任务
         if self.goal_handle is None:
             return
         if self.result_future is not None and self.result_future.done():
@@ -99,7 +104,7 @@ class TUINode(Node):
         self.cancel_future = self.goal_handle.cancel_goal_async()
         self.cancel_future.add_done_callback(self.cancel_response_callback)
 
-    def cancel_response_callback(self,future):
+    def cancel_response_callback(self,future):#获取请求取消任务的返回
         try:
             response = future.result()
         except Exception as exc:
@@ -107,6 +112,7 @@ class TUINode(Node):
             return
         if response.goal_canceling:
             self.get_logger().info('server allows canceling')
+            self.is_receiving = False
         else:
             self.get_logger().warning('cancel rejected!')
 
@@ -115,9 +121,11 @@ class TUINode(Node):
 async def run_tui(node):
     while rclpy.ok():
         try:
-            await node.receive_input()
+            if node.is_receiving == False:
+                await node.receive_input()
+            await asyncio.sleep(0.5)
         except EOFError:
-            break
+            return
 
 def main(args=None):
     rclpy.init()
@@ -129,7 +137,8 @@ def main(args=None):
     spin_thread.start()
 
     try:
-        asyncio.run(run_tui(node))
+        with patch_stdout():
+            asyncio.run(run_tui(node))
     except KeyboardInterrupt:
         pass
     finally:
@@ -139,5 +148,5 @@ def main(args=None):
         if rclpy.ok():
             rclpy.shutdown()
 
-if __name__=='name':
+if __name__=='__main__':
     main()
