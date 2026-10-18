@@ -1,8 +1,8 @@
 # P0核心功能
 ## F0
-配置环境到RaspberriPI
+配置环境到RaspberriPI(complete)
 ## F1
-实现AI询问和输出，支持在终端打字交互
+实现AI询问和输出，支持在终端打字交互(complete)
 ## F2
 实现麦克风模块整合，音频输入接入AI
 ## F3

@@ -96,7 +96,7 @@ class AIReplyNode(Node):
 
                     if event.type == 'response.created':#开始流输出后先获取对话id
                         self.response_id = event.response.id
-
+                        self.get_logger().info(f'AI API response ID{self.response_id}')
                     if goal_handle.is_cancel_requested:#检查客户端是否取消了action
                         result = GenerateText.Result()
                         result.text = full_text

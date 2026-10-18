@@ -34,8 +34,36 @@ class TUINode(Node):
         session = PromptSession()
         print()
         self.user_input = await session.prompt_async('user:')
-        self.history[self.conversation_id].append(self.user_input)
-        self.send_goal()
+
+        self.analysis_input()
+
+    def analysis_input(self):
+        user_input = self.user_input.strip()
+
+        position = user_input.find('/shift')        
+
+        if user_input =='/exit':
+            self.request_cancel()
+            raise SystemExit(0)
+        
+        elif user_input == '/new':
+            self.conversation_id+=1
+
+            if self.conversation_id not in self.history:
+                self.history[self.conversation_id] = []
+            self.history[self.conversation_id].append(self.user_input)
+            self.get_logger().info('new conversation started!')
+            print('new conversation started!')
+            return
+
+        #elif position!=-1:
+            
+        elif not user_input:
+            return
+        else:
+            self.history[self.conversation_id].append(self.user_input)
+            self.send_goal()
+
 
     def send_goal(self):#处理发送
         if not self.client.server_is_ready():
