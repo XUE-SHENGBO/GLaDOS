@@ -39,8 +39,7 @@ class TUINode(Node):
 
     def analysis_input(self):
         user_input = self.user_input.strip()
-
-        position = user_input.find('/shift')        
+        parts = user_input.split()     
 
         if user_input =='/exit':
             self.request_cancel()
@@ -56,8 +55,16 @@ class TUINode(Node):
             print('new conversation started!')
             return
 
-        #elif position!=-1:
-            
+        elif parts[0] == '/shift':
+            number = int(parts[1])
+            if number not in self.history:
+                self.get_logger().error(f'the conversation you asked does not exist:{number}')
+                print(f'the conversation you asked does not exist:{number}')
+                return
+            self.conversation_id = number
+            self.get_logger().info(f'Shift to conversation id={number}')
+            print(f'Shift to conversation id={number}')
+            return
         elif not user_input:
             return
         else:
