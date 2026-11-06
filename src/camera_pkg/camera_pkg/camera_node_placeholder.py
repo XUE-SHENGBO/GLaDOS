@@ -1,5 +1,5 @@
 def main():
-    print('Hi from camera_pkg.')
+    print('Hi from bringup_pkg.')
 
 
 if __name__ == '__main__':
