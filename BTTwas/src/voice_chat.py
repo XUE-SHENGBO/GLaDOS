@@ -2,6 +2,7 @@ from getpass import getpass
 from ai_chat import build_messages, ask_ai
 from microphone import record_audio
 from speech_to_text import transcribe_audio
+from text_to_speech import speak
 
 
 def main():
@@ -51,6 +52,12 @@ def main():
         ]
 
         print(f"GLaDOS:{reply}")
+
+        #播放本轮 AI 回答(后面声音可以换)
+        try:
+            speak(reply)
+        except Exception as error:
+            print(f"GLaDOS:o-O?!语音播放失败:{error}")
 
 
 if __name__ == "__main__":
