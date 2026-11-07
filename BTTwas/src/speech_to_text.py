@@ -2,13 +2,14 @@ import argparse
 from gc import is_finalized
 from pathlib import Path
 from pyexpat import model
+import re
 from faster_whisper import WhisperModel
 
-def transcribe_audio(audio_path):
+def load_model():
     #模型缓存->项目的根目录下的 models 文件夹
     models_dir = Path(__file__).resolve().parent.parent / "models"
 
-    print(f"GLaDOS:正在加载模型,请稍等......")
+    print("GLaDOS:正在加载模型,请稍等......")
 
     model = WhisperModel(
         'base', 
@@ -17,8 +18,16 @@ def transcribe_audio(audio_path):
         download_root=str(models_dir),
     )
 
-    print(f"GLaDOS:模型加载完成,开始识别音频......")
+    print("GLaDOS:模型加载完成~OvO!")
+    return model
 
+def transcribe_audio(audio_path,model=None):
+    #没有传入模型时加载模型;传入后复用现有模型
+    if model is None:
+        model = load_model()
+
+    print("GLaDOS:开始识别音频......")
+    
     segments, info = model.transcribe(
         str(audio_path),
         language="zh",
