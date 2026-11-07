@@ -10,6 +10,6 @@
 
 ## BTTwas
 
-[文件目录](./BTTwas/) · [测试](./BTTwas/tests/) · [练习](./BTTwas/exercises/) · [资料](./BTTwas/notes/) · [待整理](./BTTwas/inbox/)
+[文件目录](./BTTwas/) · [功能代码](./BTTwas/src/) · [测试](./BTTwas/tests/)
 
 分支：[`BTTwas-improve`](https://github.com/XUE-SHENGBO/GLaDOS/tree/BTTwas-improve)。
