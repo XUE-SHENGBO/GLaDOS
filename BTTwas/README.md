@@ -25,8 +25,11 @@
 使用 Python3.12 运行。以下命令适用于 macOS／Linux：
 
 `python3 -m venv .venv`
+
 `source .venv/bin/activate`
+
 `python -m pip install -r requirements.txt`
+
 `python src/voice_chat.py`
 
 ### 补充说明:
