@@ -24,7 +24,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'screen_test = screen_driver_pkg.screen_test:main'
+            'screen_test = screen_driver_pkg.screen_test:main',
+            'screen_driver = screen_driver_pkg.screen_driver:main'
         ],
     },
 )

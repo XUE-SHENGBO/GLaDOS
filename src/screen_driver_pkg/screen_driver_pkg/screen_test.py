@@ -25,7 +25,7 @@ class ST7789V2(st7789.ST7789):
 
 class ScreenTest(Node):
     def __init__(self):
-        super.__init__('ScreenTestNode')
+        super().__init__('ScreenTestNode')
         env_path = Path(__file__).resolve().parents[3] / ".env"
         load_dotenv(env_path)
         WIDTH = int(os.getenv("WIDTH", "240"))
@@ -49,23 +49,23 @@ class ScreenTest(Node):
             x_offset=X_OFFSET,
             y_offset=Y_OFFSET,
             rotation=0,
-            baudrate=1_000_000,
+            baudrate=int(os.getenv("BAUDRATE","16_000_000")),
         )
 
         try:
             # 依次显示红、绿、蓝，检查颜色和显示范围
             for color in ("red", "green", "blue"):
-                display.image(Image.new("RGB", (WIDTH, HEIGHT), color))
+                display.image(Image.new("RGB", (WIDTH, HEIGHT), color))#
                 time.sleep(1)
 
-            image = Image.new("RGB", (WIDTH, HEIGHT), "black")
-            draw = ImageDraw.Draw(image)
+            image = Image.new("RGB", (WIDTH, HEIGHT), "black")#新建画布对象,颜色RGB,指定宽高,背景色
+            draw = ImageDraw.Draw(image)#draw绑定到这个画布
 
-            draw.rectangle((0, 0, WIDTH - 1, HEIGHT - 1), outline="white")
-            draw.text((20, 30), "Hello, Raspberry Pi 4B!", fill="white")
+            draw.rectangle((0, 0, WIDTH - 1, HEIGHT - 1), outline="white")#画矩形
+            draw.text((20, 30), "Hello, Raspberry Pi 4B!", fill="white")#画字:位置,内容,填充
             draw.text((20, 55), "ST7789V2 display test", fill="yellow")
 
-            display.image(image)
+            display.image(image)#推送到显示屏显示
             print("测试画面已显示。按 Ctrl+C 退出。")
 
             while True:
