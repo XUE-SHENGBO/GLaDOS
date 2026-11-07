@@ -76,7 +76,7 @@ def main():
         try:
             reply = ask_ai(request_messages, api_key)
         except (URLError, TimeoutError) as error:
-            print(f"请求失败：{error}")
+            print(f"GLaDOS:我请求失败了TOT:{error}")
             continue
 
         messages = request_messages + [

@@ -1,0 +1,10 @@
+# Local Python environment
+/.venv/
+
+# Downloaded models and generated recordings
+/models/
+/recordings/
+
+# Generated Python bytecode
+__pycache__/
+*.py[cod]
