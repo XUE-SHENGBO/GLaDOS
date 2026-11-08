@@ -15,6 +15,7 @@ from rclpy.logging import LoggingSeverity, set_logger_level
 from rclpy.action import ActionServer,GoalResponse,CancelResponse
 from ai_interfaces.action import GenerateText
 
+import uuid
 
 class AIReplyNode(Node):
     def __init__(self):
@@ -22,7 +23,7 @@ class AIReplyNode(Node):
 
         env_path = Path(__file__).resolve().parents[3]/".env"
         load_dotenv(env_path)
-        logger_level = os.getenv("LOGGER_LEVEL")     
+        logger_level = os.getenv("LOGGER_LEVEL")
 
         ai_url = os.getenv('AI_URL')#read environment variable
         api_key = os.getenv("API_KEY")
@@ -34,7 +35,7 @@ class AIReplyNode(Node):
         self.stream = None
         self.processing = False
         self.response_id = None
-        self.conversation_id = None
+
         self.model = OpenAI(
             base_url=ai_url,
             api_key=api_key,
@@ -50,15 +51,27 @@ class AIReplyNode(Node):
             callback_group=self.action_group
         )
 
+        self.conversation_lib = {}
+
         self.get_logger().info('ai reply service startup!')
 
     def goal_callback(self,request):
-        if self.processing == True:
+        if self.processing == True:          #锁:一次处理一个
             return GoalResponse.REJECT
 
-        prompt = request.prompt
+        if request.conversation_id == '':   #如果请求的conversatio_id 为空就生成一个
+            self.conversation_id = uuid.uuid4().hex
+        else:
+            self.conversation_id = request.conversation_id
+
+        # 暂存本轮输入，成功后再提交历史，避免失败请求污染下一轮。
+        prompt = self.conversation_lib.get(self.conversation_id, []) + [
+            {'role': 'user', 'content': request.prompt},
+        ]
+        self.pending_history = prompt
+
         try:
-            self.stream = self.model.responses.create(
+            self.stream = self.model.responses.create(#尝试获取请求
                 model=self.model_name,
                 instructions=self.instructions,
                 input=prompt,
@@ -83,11 +96,12 @@ class AIReplyNode(Node):
             return GoalResponse.REJECT
 
         self.processing = True
-        self.conversation_id = request.conversation_id
+
+
         return GoalResponse.ACCEPT
-    
+
     def execute_callback(self,goal_handle):
-        
+
         sequence = 0
         full_text = ''#保存这一轮生成的全文
         try:
@@ -105,7 +119,7 @@ class AIReplyNode(Node):
                         self.model.responses.cancel(self.response_id)
                         self.processing = False
                         return result
-                    
+
                     if event.type in ('response.failed','response.incomplete'):#处理失败情况
                         self.get_logger().error(f"ai_gen_msg request error!{event.type}")
                         result = GenerateText.Result()
@@ -114,7 +128,7 @@ class AIReplyNode(Node):
                         goal_handle.abort()
                         self.processing = False
                         return result
-                    
+
                     if event.type == "response.output_text.delta":#正常接收,发布delta
                         feedback = GenerateText.Feedback()
                         feedback.delta = event.delta
@@ -126,10 +140,14 @@ class AIReplyNode(Node):
                     if event.type == "response.completed":#接受完毕,返回result
                         result = GenerateText.Result()
                         result.text = full_text
+                        result.conversation_id = self.conversation_id
+                        self.conversation_lib[self.conversation_id] = self.pending_history + [
+                            {'role': 'assistant', 'content': full_text},
+                        ]
                         goal_handle.succeed()
                         self.processing = False
                         return result
-                    
+
                 if goal_handle.is_active:
                     goal_handle.abort()
                 result = GenerateText.Result()
@@ -137,7 +155,7 @@ class AIReplyNode(Node):
                 result.error_code = "stream_ended"
                 result.error_message = "Stream ended without a terminal event"
                 return result
-            
+
         except Exception as exc:
             self.get_logger().error(str(exc))
             if goal_handle.is_active:
@@ -151,14 +169,14 @@ class AIReplyNode(Node):
             self.processing = False
             self.stream = None
             self.response_id = None
-    def cancel_callback(self,goal_handle):
+    def cancel_callback(self,goal_handle):                #受理取消
         if self.processing == False:
             result = GenerateText.Result()
             result.error_message = 'No request processing!cancel reject'
             return CancelResponse.REJECT
         return CancelResponse.ACCEPT
 
-    
+
 def main(args=None):
     rclpy.init(args=args)
     node = AIReplyNode()

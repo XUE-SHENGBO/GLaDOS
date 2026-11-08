@@ -6,3 +6,5 @@
 加入简单的AI聊天TUI
 ## 2026-10-18
 完善TUI,使用launch脚本实现单开一个窗口运行
+## 2026-11-8
+分离ai_client前端和TUI,gen_msg自动生成conversation_id,保存对话历史
