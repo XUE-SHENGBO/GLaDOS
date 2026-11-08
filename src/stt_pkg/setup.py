@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'audio_pkg'
+package_name = 'stt_pkg'
 
 setup(
     name=package_name,
@@ -24,7 +24,6 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'audio_node_placeholder = audio_pkg.audio_node_placeholder:main'
         ],
     },
 )
