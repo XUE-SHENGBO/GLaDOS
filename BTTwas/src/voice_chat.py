@@ -1,5 +1,5 @@
 from getpass import getpass
-from ai_chat import build_messages, ask_ai
+from ai_chat import AIChat
 from microphone import record_audio
 from speech_to_text import load_model,transcribe_audio
 from text_to_speech import speak
@@ -26,7 +26,7 @@ def main():
         print("GLaDOS:主人~ API Key 不能为空哦~请重新输入")
         return
 
-    messages = build_messages()
+    chat=AIChat(api_key)
     #没有传入模型时加载模型;传入后复用现有模型
     try:
         model = load_model()
@@ -58,12 +58,8 @@ def main():
             print(f"GLaDOS:~识别内容为:{user_text}")
 
             #将本轮问题和历史对话 一起发送给AI模型,获取回答.
-            request_messages = messages + [
-                {"role": "user", "content": user_text}
-            ]
-
             print("GLaDOS:正在思考...请稍等~")
-            reply = ask_ai(request_messages, api_key)
+            reply = chat.chat(user_text)
 
         except Exception as error:
             logging.exception("本轮语音对话处理失败")
@@ -71,9 +67,6 @@ def main():
             continue
 
         #请求成功将会保存本轮对话:
-        messages = request_messages + [
-            {"role": "assistant", "content": reply}
-        ]
 
         print(f"GLaDOS:{reply}")
 

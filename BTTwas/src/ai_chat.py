@@ -41,17 +41,35 @@ def ask_ai(messages, api_key):
     return result["choices"][0]["message"]["content"]
 #默认deepseek-flash模型,可修改.(量大便宜)
 
+class AIChat:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        self.messages = build_messages()
+
+    def chat(self, user_text):
+        request_messages = self.messages + [
+            {"role": "user", "content": user_text}
+        ]
+        reply = ask_ai(request_messages, self.api_key)
+        self.messages = request_messages + [
+            {"role": "assistant", "content": reply}
+        ]
+        return reply
+    
+    def reset(self):
+        self.messages = build_messages()
+
 def main():
     print("————————————欢迎使用 GLaDOS ————————————")
     print("GLaDOS:主人我在TOT\nGLaDOS:qwq~请您先登录")
 
-    api_key = getpass("请输入您的 DeepSeek API Key：").strip()
+    api_key = getpass("请输入您的 DeepSeek API Key:").strip()
 
     if not api_key:
         print("API Key 不能为空")
         return
 
-    messages = build_messages()
+    chat=AIChat(api_key)
 
     print("————————————————登录成功————————————————")
     print("GLaDOS:主人我已登录成功~请问有什么吩咐呢!\n(输入 exit 结束聊天)\n")
@@ -67,26 +85,14 @@ def main():
             print("输入不能为空")
             continue
 
-        request_messages = messages + [
-            {"role": "user", "content": user_text}
-        ]
-
-        print("GLaDOS 正在思考……")
-
+        print("GLaDOS:正在思考中...")
         try:
-            reply = ask_ai(request_messages, api_key)
-        except (URLError, TimeoutError) as error:
-            print(f"GLaDOS:我请求失败了TOT:{error}")
+            reply = chat.chat(user_text)
+        except URLError as e:
+            print(f"GLaDOS:我请求失败了TOT:{e}")
             continue
-
-        messages = request_messages + [
-            {"role": "assistant", "content": reply}
-        ]
-
         print(f"GLaDOS:{reply}")
-    
-    # messages = build_messages(user_text)
-    # print(json.dumps(messages,ensure_ascii=False,indent=2))
+
 
 if __name__ == "__main__":
     main()
