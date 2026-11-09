@@ -1,4 +1,5 @@
 from setuptools import find_packages, setup
+from glob import glob
 
 package_name = 'bringup_pkg'
 
@@ -10,6 +11,10 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        (
+            'share/' + package_name + '/launch',
+            glob('launch/*.launch.py'),
+        )
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -24,7 +29,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'bringup_node_placeholder = bringup_pkg.bringup_node_placeholder:main'
+            'bringup_node_placeholder = bringup_pkg.bringup_node_placeholder:main',
+            'voice_chat = bringup_pkg.voice_chat:main',
         ],
     },
 )

@@ -12,6 +12,9 @@ from threading import Thread
 from concurrent.futures import Future as ThreadFuture
 from prompt_toolkit.patch_stdout import patch_stdout
 from .ai_client import AIClient
+import os
+from dotenv import load_dotenv
+from pathlib import Path
 class TUINode(Node):
     def __init__(self):
         super().__init__('TUI_node')
@@ -20,6 +23,9 @@ class TUINode(Node):
         self.user_input = None
         self.conversation_id = None
         self.is_receiving = False
+        env_path = Path(__file__).resolve().parents[3]/".env"
+        load_dotenv(env_path)
+        self.instructions = os.getenv("INSTRUCTIONS")
         self.get_logger().info(f'ai_tui_node startup!')
 
     async def receive_input(self):#接受输入和发起goal
@@ -51,6 +57,7 @@ class TUINode(Node):
                     self.user_input.strip(),
                     self.conversation_id,
                     on_delta=self.feedback_callback,
+                    instructions=self.instructions
                 )
 
                 result = await asyncio.wrap_future(future)

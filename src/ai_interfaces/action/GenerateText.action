@@ -1,6 +1,7 @@
 # Goal：请求
 string prompt
 string conversation_id #conversation_id,每次请求第一次填None,会回复一个新conversation_id
+string instructions
 ---
 # Result：最终结果
 string text

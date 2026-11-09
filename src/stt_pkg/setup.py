@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'stt = stt_pkg.stt:main',
         ],
     },
 )

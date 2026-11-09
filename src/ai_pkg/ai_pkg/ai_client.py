@@ -20,7 +20,7 @@ class AIClient:
         self.conversation_id = 0
         self.is_receiving = False
 
-    def send_goal(self,prompt,conversation_id, on_delta,result_future):#处理发送
+    def send_goal(self,prompt,conversation_id, on_delta,result_future,instructions):#处理发送
         if not self.client.server_is_ready():
             self.node.get_logger().warning('Server has not been ready, please try agian later.')
             result_future.set_exception(RuntimeError('Server has not been ready, please try again later.'))
@@ -28,6 +28,7 @@ class AIClient:
         
         goal = GenerateText.Goal()
         goal.prompt = prompt
+        goal.instructions = instructions
         if conversation_id is not None:
             goal.conversation_id = conversation_id
         else:
@@ -116,10 +117,10 @@ class AIClient:
             self.node.get_logger().warning('cancel rejected!')
 
 
-    def generate(self,prompt,conversation_id=None,on_delta=None):
+    def generate(self,prompt,conversation_id=None,on_delta=None,instructions = ''):
         result_future = Future()
         try:
-            self.send_goal(prompt,conversation_id,on_delta,result_future)
+            self.send_goal(prompt,conversation_id,on_delta,result_future,instructions)
         except Exception as exc:
             if not result_future.done():
                 result_future.set_exception(exc)

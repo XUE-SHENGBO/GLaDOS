@@ -73,7 +73,7 @@ class AIReplyNode(Node):
         try:
             self.stream = self.model.responses.create(#尝试获取请求
                 model=self.model_name,
-                instructions=self.instructions,
+                instructions=request.instructions,
                 input=prompt,
                 stream=True,
                 background=True

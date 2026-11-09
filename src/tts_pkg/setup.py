@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'tts = tts_pkg.tts:main',
         ],
     },
 )

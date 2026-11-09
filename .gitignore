@@ -38,6 +38,7 @@ htmlcov/
 coverage.xml
 nosetests.xml
 .hypothesis/
+.audio_test/
 
 # Local environment and credentials; keep distributable templates
 .env
@@ -75,3 +76,6 @@ nosetests.xml
 Thumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+
+# local models
+models/
